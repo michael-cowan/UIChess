@@ -106,7 +106,7 @@ h_scale = half(scale)
 screen = pygame.display.set_mode(size)
 
 # Add icon
-pygame.display.set_icon(pygame.image.load('Chess Pieces/Icon.png'))
+pygame.display.set_icon(pygame.image.load('Pieces/Icon.png'))
 
 # Clear caption
 pygame.display.set_caption("")
@@ -132,7 +132,7 @@ FPS = 20
 class ChessPiece(pygame.sprite.Sprite):
     def __init__(self, typ):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Chess Pieces/' + typ[:-1] + '.png')
+        self.image = pygame.image.load('Pieces/' + typ[:-1] + '.png')
         self.image = pygame.transform.scale(self.image, (int(width - scale), int(height - scale)))
         self.id = typ
 
@@ -483,7 +483,7 @@ box = RED
 move = ['white', 'black']
 
 # Backgroun surface
-background = pygame.image.load('Chess Pieces/wood.jpg')
+background = pygame.image.load('Pieces/wood.jpg')
 background = pygame.transform.scale(background, size)
 
 # Turn Display
