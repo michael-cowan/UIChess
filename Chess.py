@@ -79,7 +79,7 @@ def half(x): return x / 2.
 
 ###########################################################
 
-size = (1100, 800)
+size = (800, 600)
 
 side = 5 * min(size) / 6
 
@@ -97,7 +97,7 @@ y_i = (size[1] - board_size[1]) / 4
 
 
 ### PIECES
-scale = 30
+scale = 20
 
 
 h_scale = half(scale)
