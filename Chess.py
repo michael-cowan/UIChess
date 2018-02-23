@@ -1,83 +1,83 @@
-import pygame, os, sys, string
+import pygame
+import os
+import sys
+import string
 from pygame.locals import *
 from random import random
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 #            R    G    B
-GRAY     = (210, 210, 210)
-NAVYBLUE = ( 60,  60, 100)
-RED      = (255,   0,   0)
-GREEN    = (  0, 255,   0)
-BLUE     = (  0,   0, 255)
-YELLOW   = (255, 255,   0)
-ORANGE   = (255, 128,   0)
-PURPLE   = (255,   0, 255)
-CYAN     = (  0, 255, 255)
-WHITE    = (255, 255, 255)
-BROWN    = (139,  69,  42)
-WHEAT    = (238, 213, 183)
-SMOKE    = (245, 245, 245)
-BLACK    = (  0,   0,   0)
-OLIVE    = ( 85, 107,  47)
-LIME     = ( 50, 205,  50)
+GRAY = (210, 210, 210)
+NAVYBLUE = (60,  60, 100)
+RED = (255,   0,   0)
+GREEN = (0, 255,   0)
+BLUE = (0,   0, 255)
+YELLOW = (255, 255,   0)
+ORANGE = (255, 128,   0)
+PURPLE = (255,   0, 255)
+CYAN = (0, 255, 255)
+WHITE = (255, 255, 255)
+BROWN = (139,  69,  42)
+WHEAT = (238, 213, 183)
+SMOKE = (245, 245, 245)
+BLACK = (0,   0,   0)
+OLIVE = (85, 107,  47)
+LIME = (50, 205,  50)
 
-########## STARTING POSITIONS
+"""
+    STARTING POSITIONS
+"""
+positions = {'black_pawn0': [0, 1],
+             'black_pawn1': [1, 1],
+             'black_pawn2': [2, 1],
+             'black_pawn3': [3, 1],
+             'black_pawn4': [4, 1],
+             'black_pawn5': [5, 1],
+             'black_pawn6': [6, 1],
+             'black_pawn7': [7, 1],
 
-# piece[X,Y]
+             'white_pawn0': [0, 6],
+             'white_pawn1': [1, 6],
+             'white_pawn2': [2, 6],
+             'white_pawn3': [3, 6],
+             'white_pawn4': [4, 6],
+             'white_pawn5': [5, 6],
+             'white_pawn6': [6, 6],
+             'white_pawn7': [7, 6],
 
+             'black_rook0': [0, 0],
+             'black_rook1': [7, 0],
 
-positions = {
+             'white_rook0': [0, 7],
+             'white_rook1': [7, 7],
 
-'black_pawn0'   : [0, 1],
-'black_pawn1'   : [1, 1],
-'black_pawn2'   : [2, 1],
-'black_pawn3'   : [3, 1],
-'black_pawn4'   : [4, 1],
-'black_pawn5'   : [5, 1],
-'black_pawn6'   : [6, 1],
-'black_pawn7'   : [7, 1],
+             'black_knight0': [1, 0],
+             'black_knight1': [6, 0],
 
-'white_pawn0'   : [0, 6],
-'white_pawn1'   : [1, 6],
-'white_pawn2'   : [2, 6],
-'white_pawn3'   : [3, 6],
-'white_pawn4'   : [4, 6],
-'white_pawn5'   : [5, 6],
-'white_pawn6'   : [6, 6],
-'white_pawn7'   : [7, 6],
+             'white_knight0': [1, 7],
+             'white_knight1': [6, 7],
 
-'black_rook0'   : [0,0],
-'black_rook1'   : [7, 0],
+             'black_bishop0': [2, 0],
+             'black_bishop1': [5, 0],
 
-'white_rook0'   : [0, 7],
-'white_rook1'   : [7, 7],
+             'white_bishop0': [2, 7],
+             'white_bishop1': [5, 7],
 
-'black_knight0' : [1, 0],
-'black_knight1' : [6, 0],
+             'black_queen0': [3, 0],
+             'white_queen0': [3, 7],
 
-'white_knight0' : [1, 7],
-'white_knight1' : [6, 7],
-
-'black_bishop0' : [2, 0],
-'black_bishop1' : [5, 0],
-
-'white_bishop0' : [2, 7],
-'white_bishop1' : [5, 7],
-
-'black_queen0'  : [3, 0],
-'white_queen0'  : [3, 7],
-
-'black_king0'   : [4, 0],
-'white_king0'   : [4, 7]
-
-}
+             'black_king0': [4, 0],
+             'white_king0': [4, 7]
+             }
 
 
 def half(x): return x / 2.
 
 
-###########################################################
+"""
+    INIT
+"""
 
 size = (800, 600)
 
@@ -95,10 +95,10 @@ x_i = (size[0] - board_size[0]) / 8
 y_i = (size[1] - board_size[1]) / 4
 
 
-
-### PIECES
+"""
+    PIECES
+"""
 scale = 20
-
 
 h_scale = half(scale)
 
@@ -118,27 +118,23 @@ screen.fill(SMOKE)
 psrf = pygame.Surface(board_size, pygame.SRCALPHA, 32)
 psrf = psrf.convert_alpha()
 
-
-
 pygame.font.init()
 clock = pygame.time.Clock()
 FPS = 20
-
-
-###########################################################
-
 
 
 class ChessPiece(pygame.sprite.Sprite):
     def __init__(self, typ):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load('Pieces/' + typ[:-1] + '.png')
-        self.image = pygame.transform.scale(self.image, (int(width - scale), int(height - scale)))
+        self.image = pygame.transform.scale(self.image,
+                                            (int(width - scale),
+                                             int(height - scale)))
         self.id = typ
 
         self.x = 0
         self.y = 0
-        
+
         self.selected = False
 
     def move(self, new_pos):
@@ -149,12 +145,9 @@ class ChessPiece(pygame.sprite.Sprite):
         if on_board(self.id):
             psrf.blit(self.image, (self.x, self.y))
 
-
-
-
-
-
-
+"""
+    PIECE GROUPS
+"""
 
 black_pieces = pygame.sprite.Group()
 white_pieces = pygame.sprite.Group()
@@ -171,27 +164,21 @@ for piece in positions:
 
     active_pieces.add(p)
 
-
-
-
-
-
-
-
-
-
 # Positions to place pieces
 pos = {}
 
+
+def get_newsquare(ps):
+    pass
 
 # Add the squares of the board
 y = 0
 for i in xrange(8):
     x = 0
     for j in xrange(8):
-        col = BROWN if (i%2 == j%2) else WHEAT
+        col = BROWN if (i % 2 == j % 2) else WHEAT
         pygame.draw.rect(psrf, col, (x, y, width + 1, height + 1))
-        pos[str(j)+str(i)] = (x + h_scale, y + h_scale)
+        pos[str(j) + str(i)] = (x + h_scale, y + h_scale)
         x += width
     y += height
 
@@ -199,14 +186,20 @@ for i in xrange(8):
 t = 2       # Line thickness
 shift = 0   # Used so all lines show
 for k in xrange(9):
-    pygame.draw.line(psrf, BLACK, [0, (height * k) - shift], [board_size[0], (height * k) - shift], t)
-    pygame.draw.line(psrf, BLACK, [(width * k) - shift, 0], [(width * k) - shift, board_size[1],], t)
+    pygame.draw.line(psrf,
+                     BLACK,
+                     [0, (height * k) - shift],
+                     [board_size[0], (height * k) - shift], t)
+
+    pygame.draw.line(psrf,
+                     BLACK,
+                     [(width * k) - shift, 0],
+                     [(width * k) - shift, board_size[1]], t)
+
     shift = 0 if k != 8 else 1
 
 # Board Surface
 board = psrf.copy()
-
-
 
 # Add letters and numbers
 bot = y + half(height) + 10
@@ -218,7 +211,6 @@ for i in xrange(8):
 
     screen.blit(let, (x_i + half(width) + (i * width) - 2, bot))
     screen.blit(num, (side, y_i + half(height) + (i * height)))
-
 
 
 def on_board(id):
@@ -233,14 +225,12 @@ def on_board(id):
         return False
 
 
-
 def read_id(id):
     """
         Turns integer list into string
     """
 
     return ''.join([str(i) for i in positions[id]])
-
 
 
 def reset_board():
@@ -262,7 +252,6 @@ def reset_board():
 ##############################################################################
 
 
-
 def pawn_moves(start):
     """
         Allowable pawn moves based
@@ -271,7 +260,7 @@ def pawn_moves(start):
 
     places = []
     sign = -1 if move[0] == 'white' else 1
-    n = 3 if ([start[1], move[0]] == [6, 'white']) or ([start[1], move[0]] == [1, 'black'])  else 2
+    n = 3 if (start[1], move[0]) in [(6, 'white'), (1, 'black')] else 2
     for i in xrange(1, n):
         if [start[0], start[1] + (sign * i)] in positions.values():
             break
@@ -286,7 +275,6 @@ def pawn_moves(start):
     return places
 
 
-
 def knight_moves(start):
     """
         Allowable knight moves based
@@ -296,7 +284,10 @@ def knight_moves(start):
     places = []
     for dx in range(8):
         for dy in range(8):
-            checkx, checky = [abs(n - start[ind]) for ind, n in enumerate([dx, dy])]
+            checkx, checky = [abs(n - start[ind])
+                              for ind, n
+                              in enumerate([dx, dy])]
+
             if checkx and checky and (checkx + checky == 3):
                 for block in positions:
                     if move[0] in block and positions[block] == [dx, dy]:
@@ -307,7 +298,6 @@ def knight_moves(start):
     return places
 
 
-
 def king_moves(start):
     """
         Allowable king moves based
@@ -315,24 +305,23 @@ def king_moves(start):
     """
 
     places = []
-    for i in [-1, 0, 1]:
-        for j in [-1, 0, 1]:
-            test_pos = [sum(v) for v in zip(start, [i, j])]
-            if not (i == 0 and j == 0) and (-1 not in test_pos) and (8 not in test_pos):
-                if test_pos not in positions.values():
-                    places.append(test_pos)
-                else:
-                    for p in positions:
-                        if positions[p] == test_pos and move[1] in p:
-                            places.append(test_pos)
+    moves = [(i, j) for i in [-1, 0, 1] for j in [-1, 0, 1] if i or j]
+    for m in moves:
+        test_pos = [sum(v) for v in zip(start, m)]
+        if (-1 not in test_pos) and (8 not in test_pos):
+            if test_pos not in positions.values():
+                places.append(test_pos)
+            else:
+                for p in positions:
+                    if positions[p] == test_pos and move[1] in p:
+                        places.append(test_pos)
 
     return places
 
 
-
 def vertical_moves(start):
     """
-        Determines distance a piece can 
+        Determines distance a piece can
         move horizontally or vertically
     """
 
@@ -341,7 +330,7 @@ def vertical_moves(start):
         for ran in [xrange(start[ind] + 1, 8), xrange(start[ind] - 1, -1, -1)]:
             b = 0
             for m in ran:
-                check = [start[0], m] if ind else [m, start[1]]  
+                check = [start[0], m] if ind else [m, start[1]]
                 if b:
                     break
                 if check not in positions.values():
@@ -357,10 +346,9 @@ def vertical_moves(start):
     return places
 
 
-
 def diagonal_moves(start):
     """
-        Determines distance a piece can 
+        Determines distance a piece can
         move diagonally
     """
 
@@ -381,10 +369,6 @@ def diagonal_moves(start):
             test_pos = [sum(i) for i in zip(test_pos, s)]
 
     return places
-
-
-
-##############################################################################
 
 
 def can_move(spot):
@@ -418,12 +402,10 @@ def can_move(spot):
                 if 'king' in p:
                     places += king_moves(start)
 
-
     if places:
         return LIME, places
     else:
         return RED, places
-
 
 
 def remove(enemy):
@@ -438,7 +420,6 @@ def remove(enemy):
             piece.kill()
 
 
-            
 def mouse_pos(click_pos):
     """
         Determines the position chosen based
@@ -446,7 +427,8 @@ def mouse_pos(click_pos):
     """
 
     cx, cy = click_pos
-    if (x_i < cx < (x_i + board_size[0])) and (y_i < cy < (y_i + board_size[1])):
+    if (x_i < cx < (x_i + board_size[0])) and \
+       (y_i < cy < (y_i + board_size[1])):
         xp = yp = 0
         for i in act_pos:
             if xp < act_pos[i][0] < cx:
@@ -461,8 +443,6 @@ def mouse_pos(click_pos):
 
     return [0, 0]
 
-
-
 move_font = pygame.font.Font(None, 30)
 
 act_pos = pos.copy()
@@ -474,7 +454,7 @@ for p in act_pos:
 
 hl_x, hl_y = act_pos['07']
 
-reset_board()   
+reset_board()
 pygame.display.update()
 
 selected = False
@@ -490,7 +470,8 @@ background = pygame.transform.scale(background, size)
 turn = pygame.Surface((board_size[0], half(size[1] - board_size[1]) - scale))
 
 # Options Display
-options = pygame.Surface((size[0] - board_size[0] - x_i - (5 * x_i / 4), board_size[1] + 3 * half(turn.get_height()))) 
+options = pygame.Surface((size[0] - board_size[0] - x_i - (5 * x_i / 4),
+                         board_size[1] + 3 * half(turn.get_height())))
 
 hover = True
 old_mx, old_my = [0, 0]
@@ -504,7 +485,8 @@ while 1:
     mp_x, mp_y = pygame.mouse.get_pos()
 
     if hover:
-        if x_i <= mp_x <= (x_i + board_size[0]) and y_i <= mp_y <= (y_i + board_size[1]):
+        if x_i <= mp_x <= (x_i + board_size[0]) and \
+           y_i <= mp_y <= (y_i + board_size[1]):
             pygame.mouse.set_cursor(*pygame.cursors.diamond)
         else:
             pygame.mouse.set_cursor(*pygame.cursors.arrow)
@@ -520,13 +502,11 @@ while 1:
                 mp_x = mp_y = 0
             else:
                 old_mx, old_my = mp_x, mp_y
-            
 
             if mp_x and mp_y:
                 hl_x, hl_y = mp_x, mp_y
 
         if event.type == MOUSEBUTTONDOWN:
-            
             mp_x, mp_y = mouse_pos((mp_x, mp_y))
 
             if mp_x and mp_y:
@@ -542,16 +522,22 @@ while 1:
             if event.key == K_UP and hl_y > y_i + h_scale:
                 hl_y -= height
 
-            if event.key == K_DOWN and hl_y + h_scale < y_i + board_size[1] - height:
+            if event.key == K_DOWN and \
+               hl_y + h_scale < y_i + board_size[1] - height:
+
                 hl_y += height
-                
+
             if event.key == K_LEFT and hl_x > x_i + h_scale:
                 hl_x -= width
 
-            if event.key == K_RIGHT and hl_x + h_scale < x_i + board_size[0] - width:
+            if event.key == K_RIGHT and \
+               hl_x + h_scale < x_i + board_size[0] - width:
+
                 hl_x += width
 
-            if (event.key == K_RETURN or event.key == K_SPACE) and (box == LIME or box == YELLOW):
+            if (event.key == K_RETURN or event.key == K_SPACE) and \
+               (box == LIME or box == YELLOW):
+
                 enter = True
 
     if enter:
@@ -583,15 +569,13 @@ while 1:
         if not selected:
             sel_piece = ''
 
-
-
-
     pressed = pygame.key.get_pressed()
     if pressed[K_ESCAPE]:
             pygame.quit()
             sys.exit()
 
-    # If piece isn't selected, determine if highlighting box contains piece that can move
+    # If piece isn't selected, determine if
+    # highlighting box contains piece that can move
     if not selected:
         box, places = can_move((hl_x - x_i, hl_y - y_i))
 
@@ -600,7 +584,12 @@ while 1:
 
     # Add stats & options display
     options.fill(WHEAT)
-    pygame.draw.rect(options, BLACK, (0, 0, options.get_width(), options.get_height()), 1)
+    pygame.draw.rect(options,
+                     BLACK,
+                     (0, 0, options.get_width(), options.get_height()),
+                     1
+                     )
+
     screen.blit(options, ((x_i + board_size[0] + half(x_i), y_i)))
 
     # Add board
@@ -610,23 +599,38 @@ while 1:
     active_pieces.update()
 
     # Add pieces to board
-    screen.blit(psrf , (x_i, y_i))
+    screen.blit(psrf, (x_i, y_i))
 
     # Add turn display
     text = move_font.render("Turn:  " + move[0].title(), True, BLACK)
     turn.fill(WHEAT)
-    pygame.draw.rect(turn, BLACK, (0, 0, turn.get_width(), turn.get_height()), 1)
-    turn.blit(text, (half(turn.get_width() - text.get_width()), half(turn.get_height() - text.get_height())))
+    pygame.draw.rect(turn,
+                     BLACK,
+                     (0, 0, turn.get_width(), turn.get_height()),
+                     1
+                     )
+
+    turn.blit(text,
+              (half(turn.get_width() - text.get_width()),
+               half(turn.get_height() - text.get_height()))
+              )
+
     screen.blit(turn, (x_i, y_i + board_size[1] + half(turn.get_height())))
 
     # Add box around piece that is selected
     if selected:
-        pygame.draw.rect(screen, LIME, (selx - h_scale, sely - h_scale, width, height), 4)
+        pygame.draw.rect(screen,
+                         LIME,
+                         (selx - h_scale, sely - h_scale, width, height),
+                         4
+                         )
 
     # Add highlighting box
-    pygame.draw.rect(screen, box, (hl_x - h_scale, hl_y - h_scale, width, height), 4)
-
-
+    pygame.draw.rect(screen,
+                     box,
+                     (hl_x - h_scale, hl_y - h_scale, width, height),
+                     4
+                     )
 
     if places:
         for h in places:
@@ -634,8 +638,9 @@ while 1:
             hsrf = pygame.Surface((width, height))
             hsrf.fill(YELLOW)
             hsrf.set_alpha(70)
-            screen.blit(hsrf, [j1 + j2 for j1, j2 in zip(xy, [x_i - h_scale, y_i - h_scale])])
-
+            screen.blit(hsrf, [j1 + j2
+                        for j1, j2
+                        in zip(xy, [x_i - h_scale, y_i - h_scale])])
 
     pygame.display.update()
     clock.tick(FPS)
