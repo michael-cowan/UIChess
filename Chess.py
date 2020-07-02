@@ -145,6 +145,7 @@ class ChessPiece(pygame.sprite.Sprite):
         if on_board(self.id):
             psrf.blit(self.image, (self.x, self.y))
 
+
 """
     PIECE GROUPS
 """
@@ -171,11 +172,12 @@ pos = {}
 def get_newsquare(ps):
     pass
 
+
 # Add the squares of the board
 y = 0
-for i in xrange(8):
+for i in range(8):
     x = 0
-    for j in xrange(8):
+    for j in range(8):
         col = BROWN if (i % 2 == j % 2) else WHEAT
         pygame.draw.rect(psrf, col, (x, y, width + 1, height + 1))
         pos[str(j) + str(i)] = (x + h_scale, y + h_scale)
@@ -185,7 +187,7 @@ for i in xrange(8):
 # Outline the board
 t = 2       # Line thickness
 shift = 0   # Used so all lines show
-for k in xrange(9):
+for k in range(9):
     pygame.draw.line(psrf,
                      BLACK,
                      [0, (height * k) - shift],
@@ -205,8 +207,8 @@ board = psrf.copy()
 bot = y + half(height) + 10
 side = x_i - 20
 font = pygame.font.Font(None, 23)
-for i in xrange(8):
-    let = font.render(string.uppercase[i], True, BLACK)
+for i in range(8):
+    let = font.render(string.ascii_uppercase[i], True, BLACK)
     num = font.render(str(8 - i), True, BLACK)
 
     screen.blit(let, (x_i + half(width) + (i * width) - 2, bot))
@@ -261,7 +263,7 @@ def pawn_moves(start):
     places = []
     sign = -1 if move[0] == 'white' else 1
     n = 3 if (start[1], move[0]) in [(6, 'white'), (1, 'black')] else 2
-    for i in xrange(1, n):
+    for i in range(1, n):
         if [start[0], start[1] + (sign * i)] in positions.values():
             break
         else:
@@ -326,8 +328,8 @@ def vertical_moves(start):
     """
 
     places = []
-    for ind in xrange(2):
-        for ran in [xrange(start[ind] + 1, 8), xrange(start[ind] - 1, -1, -1)]:
+    for ind in range(2):
+        for ran in [range(start[ind] + 1, 8), range(start[ind] - 1, -1, -1)]:
             b = 0
             for m in ran:
                 check = [start[0], m] if ind else [m, start[1]]
@@ -442,6 +444,7 @@ def mouse_pos(click_pos):
             pass
 
     return [0, 0]
+
 
 move_font = pygame.font.Font(None, 30)
 
@@ -571,8 +574,8 @@ while 1:
 
     pressed = pygame.key.get_pressed()
     if pressed[K_ESCAPE]:
-            pygame.quit()
-            sys.exit()
+        pygame.quit()
+        sys.exit()
 
     # If piece isn't selected, determine if
     # highlighting box contains piece that can move
